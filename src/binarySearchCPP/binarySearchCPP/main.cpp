@@ -56,5 +56,51 @@ int main(int argc, const char * argv[]) {
         return 1;
     }   // End of file check
     
+    // Variables for loop to load file into array
+    int listSize = 0;
+    line[0] = 0;                          // Clear the line buffer
+    PhoneFile.getline(line, LINE_SIZE);   // Read the 1st line in the file
+    
+    // Start loop
+    while (!PhoneFile.eof() && listSize < LIST_LENGTH && line[0]) {
+        // If string length in line is > 1
+        if (strlen(line) > 1) {
+            // The following lines of are specific for xCode
+            ptr = strtok(line, ".");               // Find name separated by "." char
+            strcpy(List[listSize].name, ptr);      // Copy name to array, position[listSize]
+            ptr = strtok(NULL, ".\r\n");           // Find Phone number
+            strcpy (List[listSize].number, ptr);   // Copy number to array
+            listSize++;                            // Update listSize
+        }   // End of if statement
+        
+        line[0] = 0;                          // Clear the line buffer
+        PhoneFile.getline(line, LINE_SIZE);   // Read the next line
+    }   // End of loop
+    
+#if debug_messages == 1
+    cout << "There are " << listSize << " Lines in the file." << endl;
+#endif
+    
+    // ---------------------- Request a search string, then find it ----------------------
+    char searchString[80];   // Char Array for user input
+    // Prompt for input
+    cout << "Enter a name or phone number: ";
+    // Using getline to read spaces.
+    cin.getline(searchString, 80);
+    
+    // ------------------------------------------------------------
+    // --------------------- Sequential Seacrh --------------------
+    // ------------------------------------------------------------
+    bool found = false;   // Heaven't found it yet
+    int index;            // Use for loop
+    
+    // Start loop
+    for (index = 0; index < listSize; index++) {
+        
+    }   // End of for
+    
+    // Test output
+    cout << "List size = " << listSize <<endl;
+    
     return 0;
 }
