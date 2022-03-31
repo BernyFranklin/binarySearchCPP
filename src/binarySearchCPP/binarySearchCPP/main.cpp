@@ -112,6 +112,11 @@ int main(int argc, const char * argv[]) {
         
     }   // End of for
     
+    // Display for sequential search
+    cout << endl;
+    cout << "================================================" << endl;
+    cout << "              Sequential Search Data            " << endl;
+    cout << "================================================" << endl;
     // Did we find it?
     if (found) {
         cout << "Customer name: " << List[index].name << endl;
@@ -122,8 +127,11 @@ int main(int argc, const char * argv[]) {
         cout << "Not found" << endl;
     
     // Test output
+    cout << "=================================" << endl;
+    cout << "This is test output, delete later" << endl;
+    cout << "=================================" << endl;
     cout << "List size = " << listSize <<endl;
-    cout << List[183].name << endl;
+    cout << "Name at index [" << index << "] is: " << List[184].name << endl;
     
     return 0;
 }
