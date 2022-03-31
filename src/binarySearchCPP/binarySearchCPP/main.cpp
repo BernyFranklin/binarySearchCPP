@@ -37,7 +37,24 @@ typedef struct S_REC {
 
 // Start Main
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
+    // Declare variables and arrays
+    PhoneRec List[LIST_LENGTH];   // [length][width]
+    char line[LINE_SIZE];         // Line of text from the disk
+    char filename[] = "/Users/frankbernal/Documents/GitHub/binarySearchCPP/src/binarySearchCPP/binarySearchCPP/phonyListing.txt";
+    char* ptr;
+    int searchCounter;
+    
+    // ===============================================
+    // ----- Read the file into the List[] array -----
+    // ===============================================
+    
+    ifstream PhoneFile(filename);
+    
+    // Did filename work?
+    if (!PhoneFile) {
+        cerr << "Unable to open" << filename << endl;
+        return 1;
+    }   // End of file check
+    
     return 0;
 }
