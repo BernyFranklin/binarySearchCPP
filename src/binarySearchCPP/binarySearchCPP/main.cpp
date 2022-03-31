@@ -16,7 +16,7 @@
 #include <iostream>    // Used for standard input output
 #include <fstream>     // Used to bring in files
 #include <cstdlib>     // Used for general utilities
-
+#include <cctype>
 using namespace std;   // Used for std::cin&cout
 
 #define debug_messages 1
@@ -42,7 +42,8 @@ int main(int argc, const char * argv[]) {
     char line[LINE_SIZE];         // Line of text from the disk
     char filename[] = "/Users/frankbernal/Documents/GitHub/binarySearchCPP/src/binarySearchCPP/binarySearchCPP/phonyListing.txt";
     char* ptr;
-    int searchCounter;
+    int searchCounterSequential;
+    int searchCounterBinary;
     
     // ===============================================
     // ----- Read the file into the List[] array -----
@@ -96,7 +97,7 @@ int main(int argc, const char * argv[]) {
     
     // Start loop
     for (index = 0; index < listSize; index++) {
-        searchCounter++;   // Keep track of attempts
+        searchCounterSequential++;   // Keep track of attempts
         
         // Does search match the index for a number?
         if (strstr(List[index].number, searchString)) {
@@ -121,17 +122,84 @@ int main(int argc, const char * argv[]) {
     if (found) {
         cout << "Customer name: " << List[index].name << endl;
         cout << "Customer phone: " << List[index].number << endl;
-        cout << searchCounter << " tests were made" << endl;
+        cout << searchCounterSequential << " tests were made" << endl;
     }   // End of if
     else
         cout << "Not found" << endl;
+    
+    // ------------------------------------------------------------------
+    // -------------------------- Binary Search -------------------------
+    // ------------------------------------------------------------------
+    
+    searchCounterBinary = 0;        // Keep count of how many searches
+    int lowerBound = 0;             // Start of search has range from [0]
+    int upperBound = listSize -1;   // to end of array
+    int midpoint = 0;
+    
+    // Display header for binary search
+    cout << endl;
+    cout << "================================================" << endl;
+    cout << "              Starting Binary Search            " << endl;
+    cout << "================================================" << endl;
+    
+    // Not found yet
+    found = false;
+    
+    // Start loop
+    while (lowerBound <= upperBound) {
+        searchCounterBinary++;                      // Update binary counter
+        midpoint = (lowerBound + upperBound) / 2;   // Add low and upper and find middle
+        
+#if debug_messages == 1
+        cout << searchCounterBinary << " lowerBound = " << lowerBound << " midPoint = " << midpoint
+        << " upperBound = " << upperBound << "  " << List[midpoint].name << endl;
+#endif
+        
+        if (isalpha(searchString[0])) {
+            if (strcasecmp(List[midpoint].name, searchString) < 0)
+                lowerBound = midpoint + 1;   // Cut off lower half
+            else if (strcasecmp(List[midpoint].name, searchString) > 0)
+                upperBound = midpoint - 1;
+            else {
+                found = true;
+                break;          // Exit loop
+            }   // End of else
+        }   // End of isalpha
+        
+        // Start number
+        else {
+            if (strcasecmp(List[midpoint].number, searchString) < 0)
+                lowerBound = midpoint + 1;   // Cut off lower half
+            else if (strcasecmp(List[midpoint].number, searchString) > 0)
+                upperBound = midpoint - 1;
+            else {
+                found = true;
+                break;          // Exit loop
+            }   // End of else
+        }   // End of number
+        
+     }   // End of loop
+    
+    // Results display
+    cout << endl;
+    cout << "================================================" << endl;
+    cout << "                Binary Search Data              " << endl;
+    cout << "================================================" << endl;
+    // Found it
+    if (found) {
+        cout << "Customer name: " << List[midpoint].name << endl;
+        cout << "Customer phone: " << List[midpoint].number << endl;
+        cout << searchCounterBinary << " tests were made" << endl;
+    }   // End of if
+    else
+        cout << "Not Found in " << searchCounterBinary << " tries" << endl << endl;
     
     // Test output
     cout << "=================================" << endl;
     cout << "This is test output, delete later" << endl;
     cout << "=================================" << endl;
     cout << "List size = " << listSize <<endl;
-    cout << "Name at index [" << index << "] is: " << List[184].name << endl;
+    cout << List ;
     
     return 0;
 }
