@@ -16,7 +16,7 @@
 #include <iostream>    // Used for standard input output
 #include <fstream>     // Used to bring in files
 #include <cstdlib>     // Used for general utilities
-#include <cctype>
+#include <cctype>      // Used for isalpha
 using namespace std;   // Used for std::cin&cout
 
 #define debug_messages 1
@@ -40,7 +40,10 @@ int main(int argc, const char * argv[]) {
     // Declare variables and arrays
     PhoneRec List[LIST_LENGTH];   // [length][width]
     char line[LINE_SIZE];         // Line of text from the disk
+    
+    // Location of file on my device
     char filename[] = "/Users/frankbernal/Documents/GitHub/binarySearchCPP/src/binarySearchCPP/binarySearchCPP/phonyListing.txt";
+    
     char* ptr;
     int searchCounterSequential;
     int searchCounterBinary;
@@ -78,6 +81,16 @@ int main(int argc, const char * argv[]) {
         PhoneFile.getline(line, LINE_SIZE);   // Read the next line
     }   // End of loop
     
+    // Welcome display
+    cout << "================================================" << endl;
+    cout << "                Directory search                " << endl;
+    cout << " This program will ask for a name or phone      " << endl;
+    cout << " number and perform a sequential search and a   " << endl;
+    cout << " binary search through the directory. Upon      " << endl;
+    cout << " completion the program will compare the results" << endl;
+    cout << " and display which one was more efficient.      " << endl;
+    cout << "================================================" << endl;
+    cout << endl;
 #if debug_messages == 1
     cout << "There are " << listSize << " Lines in the file." << endl;
 #endif
@@ -85,6 +98,7 @@ int main(int argc, const char * argv[]) {
     // ---------------------- Request a search string, then find it ----------------------
     char searchString[80];   // Char Array for user input
     // Prompt for input
+    cout << endl;
     cout << "Enter a name or phone number: ";
     // Using getline to read spaces.
     cin.getline(searchString, 80);
@@ -109,14 +123,14 @@ int main(int argc, const char * argv[]) {
         else if (strstr(List[index].name, searchString)) {
             found = true;
             break;
-        }
+        }   // End of else
         
     }   // End of for
     
     // Display for sequential search
     cout << endl;
     cout << "================================================" << endl;
-    cout << "              Sequential Search Data            " << endl;
+    cout << "            Sequential Search Results           " << endl;
     cout << "================================================" << endl;
     // Did we find it?
     if (found) {
@@ -146,34 +160,44 @@ int main(int argc, const char * argv[]) {
     found = false;
     
     // Start loop
+    // Continue until lowerBound and upperBound meet
+    // By the time they meet they should be on the searched
+    // item or the search is done
     while (lowerBound <= upperBound) {
         searchCounterBinary++;                      // Update binary counter
         midpoint = (lowerBound + upperBound) / 2;   // Add low and upper and find middle
         
 #if debug_messages == 1
-        cout << searchCounterBinary << " lowerBound = " << lowerBound << " midPoint = " << midpoint
-        << " upperBound = " << upperBound << "  " << List[midpoint].name << endl;
+        // setw(3) is to format all number data to be 3 chars wide
+        cout << setw(3) << searchCounterBinary << " lowerBound = " << setw(3) << lowerBound << " midPoint = "
+        << setw(3) << midpoint << " upperBound = " << setw(3) << upperBound << "  " << List[midpoint].name << endl;
 #endif
-        
+        // Is the search alphabetic?
         if (isalpha(searchString[0])) {
+            // Search is greater than midpoint
             if (strcasecmp(List[midpoint].name, searchString) < 0)
                 lowerBound = midpoint + 1;   // Cut off lower half
+            // Search is lower than midpoint
             else if (strcasecmp(List[midpoint].name, searchString) > 0)
-                upperBound = midpoint - 1;
+                upperBound = midpoint - 1;   // Cut off upper half
+            // Search found a match
             else {
-                found = true;
+                found = true;   // Set Flag
                 break;          // Exit loop
             }   // End of else
         }   // End of isalpha
         
-        // Start number
+        // Search is numeric
         else {
+            // Search is greater than midpoint
             if (strcasecmp(List[midpoint].number, searchString) < 0)
                 lowerBound = midpoint + 1;   // Cut off lower half
+            // Search is lower than midpoint
             else if (strcasecmp(List[midpoint].number, searchString) > 0)
-                upperBound = midpoint - 1;
+                upperBound = midpoint - 1;   // Cut off upper half
+            // Search found a match
             else {
-                found = true;
+                found = true;   // Set flag
                 break;          // Exit loop
             }   // End of else
         }   // End of number
@@ -183,7 +207,7 @@ int main(int argc, const char * argv[]) {
     // Results display
     cout << endl;
     cout << "================================================" << endl;
-    cout << "                Binary Search Data              " << endl;
+    cout << "              Binary Search Results             " << endl;
     cout << "================================================" << endl;
     // Found it
     if (found) {
@@ -194,12 +218,22 @@ int main(int argc, const char * argv[]) {
     else
         cout << "Not Found in " << searchCounterBinary << " tries" << endl << endl;
     
-    // Test output
-    cout << "=================================" << endl;
-    cout << "This is test output, delete later" << endl;
-    cout << "=================================" << endl;
-    cout << "List size = " << listSize <<endl;
-    cout << List ;
+    // Efficiency report
+    cout << endl;
+    cout << "================================================" << endl;
+    cout << "                Efficiency Report               " << endl;
+    cout << "================================================" << endl;
+    // Compare results
+    if (searchCounterSequential < searchCounterBinary) {
+        cout << "The sequential search was more efficient by completing " << searchCounterBinary - searchCounterSequential
+        << " fewer tests." << endl << endl;
+    }   // End of if
+    else if (searchCounterSequential > searchCounterBinary) {
+        cout << "The binary search was more efficient by completing " << searchCounterSequential - searchCounterBinary
+        << " fewer tests." << endl << endl;
+    }   // End of if else
+    else
+        cout << "Both searches were equallt efficient" << endl << endl;
     
     return 0;
 }
