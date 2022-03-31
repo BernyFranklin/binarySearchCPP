@@ -96,11 +96,34 @@ int main(int argc, const char * argv[]) {
     
     // Start loop
     for (index = 0; index < listSize; index++) {
+        searchCounter++;   // Keep track of attempts
+        
+        // Does search match the index for a number?
+        if (strstr(List[index].number, searchString)) {
+            found = true;   // Fount it
+            break;          // exit loop
+        } // End of if
+        
+        // Does the search match the index for a name?
+        else if (strstr(List[index].name, searchString)) {
+            found = true;
+            break;
+        }
         
     }   // End of for
     
+    // Did we find it?
+    if (found) {
+        cout << "Customer name: " << List[index].name << endl;
+        cout << "Customer phone: " << List[index].number << endl;
+        cout << searchCounter << " tests were made" << endl;
+    }   // End of if
+    else
+        cout << "Not found" << endl;
+    
     // Test output
     cout << "List size = " << listSize <<endl;
+    cout << List[183].name << endl;
     
     return 0;
 }
