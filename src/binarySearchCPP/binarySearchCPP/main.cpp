@@ -45,7 +45,7 @@ int main(int argc, const char * argv[]) {
     char filename[] = "/Users/frankbernal/Documents/GitHub/binarySearchCPP/src/binarySearchCPP/binarySearchCPP/phonyListing.txt";
     
     char* ptr;
-    int searchCounterSequential;
+    int searchCounterSequential;   // Counters for each search
     int searchCounterBinary;
     
     // ===============================================
@@ -96,7 +96,9 @@ int main(int argc, const char * argv[]) {
 #endif
     
     // ---------------------- Request a search string, then find it ----------------------
+    
     char searchString[80];   // Char Array for user input
+    
     // Prompt for input
     cout << endl;
     cout << "Enter a name or phone number: ";
@@ -106,10 +108,12 @@ int main(int argc, const char * argv[]) {
     // ------------------------------------------------------------
     // --------------------- Sequential Seacrh --------------------
     // ------------------------------------------------------------
-    bool found = false;   // Heaven't found it yet
-    int index;            // Use for loop
+    bool found = false;            // Heaven't found it yet
+    int index;                     // Use for loop
+    searchCounterSequential = 0;   // Initialize counter
     
     // Start loop
+    // Iterate through list unti la match is found
     for (index = 0; index < listSize; index++) {
         searchCounterSequential++;   // Keep track of attempts
         
@@ -134,10 +138,13 @@ int main(int argc, const char * argv[]) {
     cout << "================================================" << endl;
     // Did we find it?
     if (found) {
+        // Display name, number, and tests made
         cout << "Customer name: " << List[index].name << endl;
         cout << "Customer phone: " << List[index].number << endl;
         cout << searchCounterSequential << " tests were made" << endl;
     }   // End of if
+    
+    // We did not find it
     else
         cout << "Not found" << endl;
     
@@ -172,6 +179,7 @@ int main(int argc, const char * argv[]) {
         cout << setw(3) << searchCounterBinary << " lowerBound = " << setw(3) << lowerBound << " midPoint = "
         << setw(3) << midpoint << " upperBound = " << setw(3) << upperBound << "  " << List[midpoint].name << endl;
 #endif
+        // All searches use strcasecmp() to be case insensitive
         // Is the search alphabetic?
         if (isalpha(searchString[0])) {
             // Search is greater than midpoint
@@ -185,7 +193,7 @@ int main(int argc, const char * argv[]) {
                 found = true;   // Set Flag
                 break;          // Exit loop
             }   // End of else
-        }   // End of isalpha
+        }   // End of alphabetic
         
         // Search is numeric
         else {
@@ -200,7 +208,7 @@ int main(int argc, const char * argv[]) {
                 found = true;   // Set flag
                 break;          // Exit loop
             }   // End of else
-        }   // End of number
+        }   // End of numeric
         
      }   // End of loop
     
@@ -209,12 +217,16 @@ int main(int argc, const char * argv[]) {
     cout << "================================================" << endl;
     cout << "              Binary Search Results             " << endl;
     cout << "================================================" << endl;
+    
     // Found it
+    // Display Name, number, and tests made
     if (found) {
         cout << "Customer name: " << List[midpoint].name << endl;
         cout << "Customer phone: " << List[midpoint].number << endl;
         cout << searchCounterBinary << " tests were made" << endl;
     }   // End of if
+    
+    // Did not find it
     else
         cout << "Not Found in " << searchCounterBinary << " tries" << endl << endl;
     
@@ -224,6 +236,7 @@ int main(int argc, const char * argv[]) {
     cout << "                Efficiency Report               " << endl;
     cout << "================================================" << endl;
     // Compare results
+    // Display which search was more efficient and by how much
     if (searchCounterSequential < searchCounterBinary) {
         cout << "The sequential search was more efficient by completing " << searchCounterBinary - searchCounterSequential
         << " fewer tests." << endl << endl;
